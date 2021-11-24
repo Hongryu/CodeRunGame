@@ -1,0 +1,41 @@
+body{
+    background-color: gainsboro;
+}
+
+#title{
+    text-align: center;
+}
+
+#main_menu {
+    position: relative
+  }
+  
+#main_menu_center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); 
+}
+
+#gameStart_btn{
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+#gameHelp_btn{
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+#ranking_btn{
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+}
