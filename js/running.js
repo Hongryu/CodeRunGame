@@ -37,5 +37,3 @@ jumping.addEventListener('click', function(){
 })
 
 const sliding = document.querySelector("#slide")
-
-
