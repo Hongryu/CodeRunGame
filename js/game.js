@@ -21,6 +21,7 @@ let isAlive = setTimeout(function crash(){
     let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
     if(cactusLeft<50&&cactusLeft>0&&dinoTop>=140){
         alert("Game Over");
+        localStorage.setItem(Number,score);
         score = 0;
     }
     setTimeout(crash, 10);
