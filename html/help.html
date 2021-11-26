@@ -3,15 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/help.css">
+    <script src = "/js/help.js"></script>
     <title>How to Game?</title>
 </head>
-<body>
-    <div class="helpText">
+<body style = "background-color: beige;">
 
-        <h1 id="title">게임 방법</h1>
+    <div style="text-align: center; position: relative;">
+        <img src = "../img/gameHelpBG.png">
 
-        <button id="next_btn">다음</button>
-    </div>
-    <script src="/js/help.js"></script>
+        <div style="left:100px; width: 450px; bottom: 140px;
+        font-size: 1.8mm; position: absolute;">
+           
+        </div>
+   </div>
+
+
+<!-- 이전 페이지로 돌아가는 함수 -->
+
+
+   <div class = "helpback">
+        <button onclick="back()">돌아가기</button>
+   </div>
+
+
+    <!-- <div class = "helptext">
+            <h1 style="">게임 설명</h1>
+            <button id="next_btn">다음</button>
+    <input type="button" value="뒤로 가기" onClick="history.go(-1)"> 
+        </div> -->
+        <!-- <script src="/js/help.js"></script> -->
+        
+
 </body>
 </html>
