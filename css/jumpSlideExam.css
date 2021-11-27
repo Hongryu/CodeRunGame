@@ -1,0 +1,23 @@
+/* .game{
+    height:400px;
+    width:500px;
+    background-color: yellow;
+} */
+
+.character{
+    background-color: red;
+    height: 70px;
+    width:40px;
+    position: absolute;
+    bottom:300px;
+    left:100px;
+}
+
+.character-slide{
+    background-color: red;
+    height: 40px;
+    width:70px;
+    position: absolute;
+    bottom:300px;
+    left:100px;
+}
