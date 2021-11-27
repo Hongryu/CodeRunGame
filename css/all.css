@@ -1,0 +1,35 @@
+body{
+    margin:0px
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: white;
+  }
+
+
+.gameArea{
+    background-image: url("../image/map1BG.png");
+    width:1920px;
+    height:1080px;
+    border:5px solid black
+}
+
+.character{
+    height: 200px;
+    width: 180px;
+    position: absolute;
+    bottom:340px;
+    left:650px;
+}
+
+.character-slide{
+    height: 120px;
+    width:200px;
+    position: absolute;
+    bottom:340px;
+    left:650px;
+}
