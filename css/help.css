@@ -1,8 +1,5 @@
-img{
-    width: 700px;
-    height:900px;
-}
-
-button{
-   top: 300px;
+#gameBack_btn{
+     margin-top:45px;
+     border: none;
+     background: none;
 }
