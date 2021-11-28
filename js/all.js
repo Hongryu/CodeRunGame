@@ -1,14 +1,15 @@
 const canvas = document.querySelector("#canvas1");
 const context = canvas.getContext('2d');
 
-const CANVAS_WIDTH =canvas.width = 1920;
-const CANVAS_HEIGHT =canvas.height = 1080;
+const CANVAS_WIDTH =canvas.width = innerWidth;
+const CANVAS_HEIGHT =canvas.height = innerHeight;
 
 
 //-----------------배경 이미지 설정---------------------------------
 let gameSpeed = 15;
 
 //이미지 객체 생성
+//배경화면
 const backgroundLayer1 = new Image()
 backgroundLayer1.src="../image/backCloud.png"
 const backgroundLayer2 = new Image()
@@ -16,18 +17,50 @@ backgroundLayer2.src="../image/frontCloud.png"
 const backgroundLayer3 = new Image()
 backgroundLayer3.src="../image/map1Ground.png"
 
+//장애물
+const obstacle1 = new Image()
+obstacle1.src="../image/rock.png";
+const obstacle2 = new Image()
+obstacle2.src="../image/grass.png";
+
+class obstacle{
+    constructor(image, speedModifier, x){
+        this.x = x;
+        this.y = 650;
+        this.width=150;
+        this.height = 150;
+        this.image = image;
+        this.speedModifier = speedModifier;
+        this.speed = gameSpeed = this.speedModifier;
+    }
+
+    update(){
+        //x는 오->왼으로 이동
+        this.speed = gameSpeed * this.speedModifier;
+        if(this.x<= -this.width){
+            this.x = (this.width + this.x2 + this.plus) - this.speed;
+        }
+        this.x = Math.floor(this.x - this.speed);
+    }
+    draw(){
+        //이미지 그리기(이미지 객체 2개가 그려짐)
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+
 class Layer{
     constructor(image, speedModifier, plus){
         this.x = 0;
         this.y = 0;
-        this.width=1920;
-        this.height = 1080;
+        this.width=CANVAS_WIDTH;
+        this.height = CANVAS_HEIGHT;
         this.x2 = this.width + plus;
         this.image = image;
         this.speedModifier = speedModifier;
         this.speed = gameSpeed = this.speedModifier;
         this.plus = plus;
     }
+
     update(){
         //x는 오->왼으로 이동
         this.speed = gameSpeed * this.speedModifier;
@@ -51,8 +84,12 @@ const layer1 = new Layer(backgroundLayer1, 0.8, 1200);
 const layer2 = new Layer(backgroundLayer2, 1.5, 960);
 const layer3 = new Layer(backgroundLayer3, 4, 0);
 
-function animate(){
+const rock =  new obstacle(obstacle1, 4, 1980);
+const grass = new obstacle(obstacle2, 4, 3000);
+
+function BGanimate(){
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    
     layer1.update();
     layer1.draw();
 
@@ -61,10 +98,13 @@ function animate(){
 
     layer3.update();
     layer3.draw();
-    requestAnimationFrame(animate);
+
+    requestAnimationFrame(BGanimate);
 }
 
-animate();
+
+
+BGanimate();
 
 //배경 이미지 설정 끝-----------------------------------------------------------------
 
@@ -155,26 +195,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.addEventListener('keydown', control)
 })
 
-
-context.beginPath();
-context.arc(100, 100, 50, 0, radius(360), false)//호 그리기(0~360), (위치는 가운데 기준, 반지름)
-context.fill();
-
-//애니메이션 실습
-let xPos = 10;
-let count = 0;
-function draw(){
-    count++;
-
-    if(count%10===0){
-        //지우고
-        context.clearRect(0, 0, canvas.width, canvas.height )
-        context.beginPath();
-        //그리기
-        context.arc(xPos+=3, 150, 5, 0, Math.PI*2, false);
-        context.fill();
-    }
-    
-
-    requestAnimationFrame(draw);
-}
+//장애물-----------------------------------------------------------------------------------------

@@ -1,5 +1,11 @@
-body{
-    margin:0px
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+canvas {
+    display: block;
 }
 
 .wrapper {
@@ -13,8 +19,6 @@ body{
 
 .gameArea{
     background-image: url("../image/map1BG.png");
-    width:1920px;
-    height:1080px;
     border:5px solid black
 }
 
