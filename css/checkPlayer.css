@@ -1,0 +1,23 @@
+*{
+    background-image: url("../image/Titlebase.png");
+    box-sizing: border-box;
+}
+
+#onePlayer_btn{
+    cursor: pointer;
+    border: none;
+    background: none;
+    position:absolute;
+    margin-left: 280px;
+    margin-top: 180px;
+}
+
+#twoPlayer_btn{
+    cursor: pointer;
+    padding: 50;
+    border: none;
+    background: none;
+    position:absolute;
+    margin-left: 780px;
+    margin-top: 180px;
+}
