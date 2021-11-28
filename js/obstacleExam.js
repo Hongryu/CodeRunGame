@@ -78,7 +78,7 @@ class Player {
     //위에 떠 있을때
     else if (this.jumpTimer > 0 && this.jumpTimer < 15) {
       this.jumpTimer++;
-      this.dy = -this.jumpForce - (this.jumpTimer/50);  //꾹누르면 누를수록 더 올라감(누적)
+      this.dy = -this.jumpForce - (this.jumpTimer/50);  //꾹누르면 누를수록 더 올라감(snwjr)
     }
   }
 
