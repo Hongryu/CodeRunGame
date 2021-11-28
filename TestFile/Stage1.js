@@ -245,17 +245,18 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             obstacles.splice(i, 1);
         }
 
-        // if (
-        //     player.x < o.x + o.w &&
-        //     player.x + player.w > o.x &&
-        //     player.y < o.y + o.h &&
-        //     player.y + player.h > o.y
-        //     ) {
-        //         obstacles = [];
-        //         score = 0;
-        //         spawnTimer = initialSpawnTimer;
-        //         gameSpeed = 3;
-        // }
+        if (
+            player.x < o.x + o.w &&
+            player.x + player.w > o.x &&
+            player.y < o.y + o.h &&
+            player.y + player.h > o.y
+            ) {
+                obstacles = [];
+                score = 0;
+                spawnTimer = initialSpawnTimer;
+                gameSpeed = 3;
+                
+        }
 
         o.Update();
     }
