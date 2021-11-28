@@ -1,7 +1,7 @@
 let startBtn = document.querySelector('#gameStart_btn');
 startBtn.addEventListener('click', function(){
     
-    window.location.href = '/html/game.html';
+    window.location.href = 'gameRun.html';
 })
 
 let helpBtn = document.querySelector('#gameHelp_btn');

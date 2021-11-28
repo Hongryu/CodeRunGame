@@ -1,6 +1,4 @@
-body{
-    background-color: gainsboro;
-}
+
 
 #title{
     text-align: center;
@@ -21,21 +19,21 @@ body{
 
 #gameStart_btn{
     cursor: pointer;
-    padding: 0;
+    padding: 50;
     border: none;
     background: none;
 }
 
 #gameHelp_btn{
     cursor: pointer;
-    padding: 0;
+    padding: 50;
     border: none;
     background: none;
 }
 
 #ranking_btn{
     cursor: pointer;
-    padding: 0;
+    padding: 50;
     border: none;
     background: none;
 }
