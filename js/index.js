@@ -1,17 +1,17 @@
 let startBtn = document.querySelector('#gameStart_btn');
 startBtn.addEventListener('click', function(){
     
-    window.location.href = 'gameRun.html';
+    window.location.href = '../TestFile/gameStart.html';
 })
 
 let helpBtn = document.querySelector('#gameHelp_btn');
 helpBtn.addEventListener('click', function(){
-    window.location.href = '/html/help.html';
+    window.location.href = 'help.html';
 })
 
 
 let rankBtn = document.querySelector('#ranking_btn');
 
 rankBtn.addEventListener('click', function(){
-    window.location.href = '/html/rank.html';
+    window.location.href = 'rank.html';
 })
