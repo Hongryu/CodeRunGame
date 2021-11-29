@@ -233,13 +233,17 @@ function Start(){
     gravity = 1;
     score = 1500;
     highscore = 0;
+    if (localStorage.getItem('highscore')) {
+      highscore = localStorage.getItem('highscore');
+    }
 
     player = new Player(600, 0, 200, 200, "#FF5858");
     player2 = new Player2(200, 0, 200, 200, "#8588FF");
     scoreText = new Text("연봉 : " + score + "만원", 25, 25, "left", "#212121", "20");
     // player2 = new Player(450, canvas.height - 300, 200, 180, "#8585FF");
     // player2.Draw();
-
+    highscoreText = new Text("Highscore: " + highscore, canvas.width - 25, 25, "right", "#212121", "20");
+  
     requestAnimationFrame(Update);
 }
 
@@ -290,6 +294,7 @@ function Update(){
             gameOver.Draw();
             isEnd = true;
             context.clearRect(0, 0, canvas.width, canvas.height);
+            window.localStorage.setItem('highscore', highscore);
         }
     }
 
@@ -304,6 +309,13 @@ function Update(){
         scoreText.Draw();
         //console.log(score);   
     }
+  
+    if (score > highscore) {
+      highscore = score;
+      highscoreText.t = "Highscore: " + highscore;
+    }
+    
+    highscoreText.Draw();
 
     gameSpeed += 0.003;
 }

@@ -18,7 +18,7 @@ let drawTimer = 0;
 //키를 누르고 있으면 그 키는 true
 document.addEventListener('keydown', function (e) {
     keys[e.code] = true;
-    //console.log(e.code)
+    console.log(e.code)
 });
 //키를 떼면 그 키는 false
 document.addEventListener('keyup', function (e) {
@@ -47,13 +47,13 @@ class Player {
 
     Animate () {
         // Jump
-        if (keys['KeyW']) {
+        if (keys['Space']) {
             this.Jump();
         } else {
             this.jumpTimer = 0;   //점프 시간을 0으로 초기화
         }
 
-        if (keys['KeyS']) {
+        if (keys['ControlLeft']) {
             this.isSlide = true;
             this.w = this.originalHeight+5;
             this.h = this.originalWidth-10;
@@ -70,7 +70,7 @@ class Player {
         
         //console.log(canvas.height);
         if (this.y + this.h < canvas.height-this.groundHeight) {      //바닥에 붙어있지 않으면
-            console.log("확인")
+            //console.log("확인")
             this.dy += gravity;
             this.grounded = false;
         } else {
@@ -143,11 +143,11 @@ class Obstacle {
 
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../backgroundImg/backgroundBack.png"
+backgroundLayer1.src="../Stage1Img/backgroundBack.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../backgroundImg/backgroundFront.png"
+backgroundLayer2.src="../Stage1Img/backgroundFront.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../backgroundImg/map1Ground.png"
+backgroundLayer3.src="../Stage1Img/map1Ground.png"
 
 class Layer{
     constructor(image, speedModifier, plus){
@@ -185,15 +185,37 @@ const layer1 = new Layer(backgroundLayer1, 0.8, 1200);
 const layer2 = new Layer(backgroundLayer2, 1.5, 960);
 const layer3 = new Layer(backgroundLayer3, 4, 0);
 
+class Text {
+    constructor (t, x, y, a, c, s) {
+      this.t = t;
+      this.x = x;
+      this.y = y;
+      this.a = a;
+      this.c = c;
+      this.s = s;
+    }
+  
+    Draw () {
+      ctx.beginPath();
+      ctx.fillStyle = this.c;
+      ctx.font = this.s + "px sans-serif";
+      ctx.textAlign = this.a;
+      ctx.fillText(this.t, this.x, this.y);
+      ctx.closePath();
+    }
+  }
+
 // Game Functions
 function SpawnObstacle () {
+    let size = RandomIntInRange(20+gameSpeed, 80+gameSpeed);
+    console.log(size);
     let type = RandomIntInRange(0, 1);
     let obstacle;
     if(type===0){
-        obstacle = new Obstacle(canvas.width + 40, canvas.height - 40, 40, 40);
+        obstacle = new Obstacle(canvas.width + size+gameSpeed, canvas.height - (size+gameSpeed), size+gameSpeed, size+gameSpeed);
         obstacle.obstacleImg.src = "../obstacleImg/obstacle0.png";
     }else if(type===1){
-        obstacle = new Obstacle(canvas.width + 80, canvas.height - 50, 80, 50);
+        obstacle = new Obstacle(canvas.width + size+gameSpeed, canvas.height - (size+gameSpeed), size+gameSpeed, (size+gameSpeed));
         obstacle.obstacleImg.src = "../obstacleImg/obstacle1.png";
     }
     obstacles.push(obstacle);
@@ -209,10 +231,24 @@ function Start () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    ctx.font = "20px sans-serif";
+    
     gameSpeed = 3;
+    //gameSpeed = 10;
     gravity = 1;
 
+    
+    highscore = 0;
+    if (localStorage.getItem('highscore')) {
+      highscore = localStorage.getItem('highscore');
+    }
+
     player = new Player(200, 0, 100, 130);
+
+    scoreText = new Text("연봉: " + score+"만원", 15, 35, "left", "#212121", canvas.width/70);
+    scoreText.fillStyle = "#FFFFFF"
+    highscoreText = new Text("최고 등수 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
+    console.log(canvas.width/5)
 
     requestAnimationFrame(Update);
 }
@@ -234,7 +270,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
         
         if (spawnTimer < 60) {
-        spawnTimer = 60;
+            spawnTimer = 60;
         }
     }
     // Spawn Enemies
@@ -255,12 +291,25 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                 score = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 3;
-                
+                window.localStorage.setItem('highscore', highscore);
         }
 
         o.Update();
     }
     player.Animate();
+
+    
+    score++;
+    scoreText.t = "연봉: " + score+"만원";
+    scoreText.Draw();
+
+    if (score > highscore) {
+        highscore = score;
+        highscoreText.t = "최고 등수 : " + highscore;
+    }
+    
+    highscoreText.Draw();
+    
     gameSpeed += 0.003;
 }
 

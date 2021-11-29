@@ -2,9 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 canvas {
-    background-image: url("../backgroundImg/map1BG.png");
+    background-image: url("../Stage1Img/map1BG.png");
     display: block;
 }

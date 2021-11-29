@@ -143,11 +143,14 @@ class Obstacle {
 
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../backgroundImg/backgroundBack.png"
+backgroundLayer1.src="../Stage2Img/cloudBack2.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../backgroundImg/backgroundFront.png"
+backgroundLayer2.src="../Stage2Img/cloudeFront2.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../backgroundImg/map1Ground.png"
+backgroundLayer3.src="../Stage2Img/waveBG0.png"
+const backgroundLayer4 = new Image()
+backgroundLayer4.src="../Stage2Img/map2Ground.png"
+
 
 class Layer{
     constructor(image, speedModifier, plus){
@@ -183,7 +186,30 @@ class Layer{
 
 const layer1 = new Layer(backgroundLayer1, 0.8, 1200);
 const layer2 = new Layer(backgroundLayer2, 1.5, 960);
-const layer3 = new Layer(backgroundLayer3, 4, 0);
+const layer3 = new Layer(backgroundLayer3, 7, 0);
+const layer4 = new Layer(backgroundLayer4, 4, 0);
+
+
+class Text {
+    constructor (t, x, y, a, c, s) {
+      this.t = t;
+      this.x = x;
+      this.y = y;
+      this.a = a;
+      this.c = c;
+      this.s = s;
+    }
+  
+    Draw () {
+      ctx.beginPath();
+      ctx.fillStyle = this.c;
+      ctx.font = this.s + "px sans-serif";
+      ctx.textAlign = this.a;
+      ctx.fillText(this.t, this.x, this.y);
+      ctx.closePath();
+    }
+  }
+  
 
 // Game Functions
 function SpawnObstacle () {
@@ -209,10 +235,22 @@ function Start () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    ctx.font = "20px sans-serif";
+
     gameSpeed = 3;
     gravity = 1;
 
+    score = 0;
+    highscore = 0;
+    if (localStorage.getItem('highscore')) {
+      highscore = localStorage.getItem('highscore');
+    }
+
     player = new Player(200, 0, 100, 130);
+
+
+    scoreText = new Text("Score: " + score, 25, 25, "left", "#212121", "20");
+    highscoreText = new Text("Highscore: " + highscore, canvas.width - 25, 25, "right", "#212121", "20");  
 
     requestAnimationFrame(Update);
 }
@@ -226,6 +264,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     layer1.update();
     layer2.update();
     layer3.update();
+    layer4.update();
 
     spawnTimer--;
     if (spawnTimer <= 0) {
@@ -261,7 +300,20 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
         o.Update();
     }
     player.Animate();
-    gameSpeed += 0.003;
+
+    
+  score++;
+  scoreText.t = "Score: " + score;
+  scoreText.Draw();
+
+  if (score > highscore) {
+    highscore = score;
+    highscoreText.t = "Highscore: " + highscore;
+  }
+  
+  highscoreText.Draw();
+
+  gameSpeed += 0.003;
 }
 
 

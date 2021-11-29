@@ -235,11 +235,11 @@ class Obstacle {
 
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../backgroundImg/backgroundBack.png"
+backgroundLayer1.src="../Stage1Img/backgroundBack.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../backgroundImg/backgroundFront.png"
+backgroundLayer2.src="../Stage1Img/backgroundFront.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../backgroundImg/map1Ground.png"
+backgroundLayer3.src="../Stage1Img/map1Ground.png"
 
 class Layer{
     constructor(image, speedModifier, plus){

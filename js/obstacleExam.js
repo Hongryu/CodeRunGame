@@ -164,7 +164,15 @@ function Start () {
   score = 0;
   highscore = 0;
   if (localStorage.getItem('highscore')) {
-    highscore = localStorage.getItem('highscore');
+    if(localStorage.getItem('highscore')!=='undefined'){
+      highscore = localStorage.getItem('highscore');
+    }else{
+      console.log("안됨")
+    }
+      
+
+  }else{
+    console.log("없음");
   }
 
   player = new Player(25, 0, 50, 50, '#FF5858');
@@ -222,7 +230,8 @@ function Update () {
   scoreText.t = "Score: " + score;
   scoreText.Draw();
 
-  if (score > highscore) {
+
+  if (score > highscore||highscore===undefined) {
     highscore = score;
     highscoreText.t = "Highscore: " + highscore;
   }
