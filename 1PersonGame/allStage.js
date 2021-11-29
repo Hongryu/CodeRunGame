@@ -333,7 +333,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                     localStorage.setItem('index', localStorageIdx);
                     console.log(localStorageIdx);
                 }
-                
+                window.location.href = '../html/gameend.html';
                 
         }
 
