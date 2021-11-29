@@ -309,6 +309,8 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             spawnTimer = 60;
         }
     }
+
+
     // Spawn Enemies
     for (let i = 0; i < obstacles.length; i++) {
         let o = obstacles[i];
@@ -324,6 +326,19 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             player.y + player.h > o.y
             ) {
                 obstacles = [];
+                
+                if(StageCount == 0){
+                    window.location.href = '../html/gameend.html';
+                }
+                else if(StageCount == 1){
+                    window.location.href = '../html/gameend1.html';
+                }
+                else if(StageCount == 2){
+                    window.location.href = '../html/gameend2.html';
+                }
+                else if(StageCount == 3){
+                    window.location.href = '../html/gameend3.html';
+                }
                 score = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 4;
