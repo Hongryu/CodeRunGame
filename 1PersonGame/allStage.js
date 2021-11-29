@@ -354,7 +354,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     highscoreText.Draw();
     
-    if(score % 1000===0){
+    if(score % 3000===0){
         ctx.beginPath();
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         console.log("지나갑니다.")
