@@ -13,12 +13,13 @@ let gameSpeed;
 let keys = {};
 let characterIdx = 0;
 let drawTimer = 0;
+let StageCount = 0;
 
 // Event Listeners
 //키를 누르고 있으면 그 키는 true
 document.addEventListener('keydown', function (e) {
     keys[e.code] = true;
-    //console.log(e.code)
+    console.log(e.code)
 });
 //키를 떼면 그 키는 false
 document.addEventListener('keyup', function (e) {
@@ -42,18 +43,18 @@ class Player {
         this.groundHeight = canvas.height/4
 
         this.characterImg = new Image();
-        this.characterImg.src="../characterImg/DefaultRun0.png"
+        this.characterImg.src="../characterImg/DefaultRun3_0.png"
     }
 
     Animate () {
         // Jump
-        if (keys['KeyW']) {
+        if (keys['Space']) {
             this.Jump();
         } else {
             this.jumpTimer = 0;   //점프 시간을 0으로 초기화
         }
 
-        if (keys['KeyS']) {
+        if (keys['ControlLeft']) {
             this.isSlide = true;
             this.w = this.originalHeight+5;
             this.h = this.originalWidth-10;
@@ -70,7 +71,7 @@ class Player {
         
         //console.log(canvas.height);
         if (this.y + this.h < canvas.height-this.groundHeight) {      //바닥에 붙어있지 않으면
-            console.log("확인")
+            //console.log("확인")
             this.dy += gravity;
             this.grounded = false;
         } else {
@@ -84,12 +85,12 @@ class Player {
 
     Slide(){
         //console.log("슬라이드 하고 있습니다.")
-        this.characterImg.src="../characterImg/Slide0.png";
+        this.characterImg.src="../characterImg/Slide3.png";
     }
 
     Jump () {
         //console.log("뛰고있습니다.")
-        this.characterImg.src="../characterImg/Jump0.png";
+        this.characterImg.src="../characterImg/Jump3.png";
         //땅에 붙어있고, jumpTimer가 0일떄(Jump를 호출하지 않을때 Jump를 호출하면)
         //y는 마이너스일수록 위로 올라간다!!
         if (this.grounded && this.jumpTimer == 0) {
@@ -110,7 +111,7 @@ class Player {
             characterIdx%=4;
             //console.log(characterIdx);
             //console.log(this.characterImg.src);
-            this.characterImg.src="../characterImg/DefaultRun"+ characterIdx +".png";
+            this.characterImg.src="../characterImg/DefaultRun3_"+ characterIdx +".png";
         }
         ctx.drawImage(this.characterImg, this.x, this.y, this.w, this.h);
     }
@@ -126,7 +127,7 @@ class Obstacle {
         this.dx = -gameSpeed;
 
         this.obstacleImg = new Image();
-        this.obstacleImg.src="../obstacleImg/obstacle0.png";
+        this.obstacleImg.src="../Stage"+StageCount+"Img/obstacle0.png";
     }
 
     Update () {
@@ -143,14 +144,11 @@ class Obstacle {
 
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../Stage2Img/cloudBack2.png"
+backgroundLayer1.src="../Stage"+StageCount+"Img/backgroundBack.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../Stage2Img/cloudeFront2.png"
+backgroundLayer2.src="../Stage"+StageCount+"Img/backgroundFront.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../Stage2Img/waveBG0.png"
-const backgroundLayer4 = new Image()
-backgroundLayer4.src="../Stage2Img/map2Ground.png"
-
+backgroundLayer3.src="../Stage"+StageCount+"Img/mapGround.png"
 
 class Layer{
     constructor(image, speedModifier, plus){
@@ -186,9 +184,7 @@ class Layer{
 
 const layer1 = new Layer(backgroundLayer1, 0.8, 1200);
 const layer2 = new Layer(backgroundLayer2, 1.5, 960);
-const layer3 = new Layer(backgroundLayer3, 7, 0);
-const layer4 = new Layer(backgroundLayer4, 4, 0);
-
+const layer3 = new Layer(backgroundLayer3, 4, 0);
 
 class Text {
     constructor (t, x, y, a, c, s) {
@@ -209,18 +205,22 @@ class Text {
       ctx.closePath();
     }
   }
-  
 
 // Game Functions
 function SpawnObstacle () {
+    let size = RandomIntInRange(20+gameSpeed, 80+gameSpeed);
+    if(size>150){size = 150;}
+    console.log(size);
     let type = RandomIntInRange(0, 1);
     let obstacle;
     if(type===0){
-        obstacle = new Obstacle(canvas.width + 40, canvas.height - 40, 40, 40);
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle0.png";
+        obstacle = new Obstacle(canvas.width + 80, canvas.height - 80,80, 80);
+        obstacle.obstacleImg.src = "../Stage"+StageCount+"Img/obstacle0.png";
+        console.log("../Stage"+StageCount+"Img/obstacle0.png")
     }else if(type===1){
-        obstacle = new Obstacle(canvas.width + 80, canvas.height - 50, 80, 50);
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle1.png";
+        obstacle = new Obstacle(canvas.width + 100, canvas.height - 80,100, 80);
+        obstacle.obstacleImg.src = "../Stage"+StageCount+"Img/obstacle1.png";
+        console.log("../Stage"+StageCount+"Img/obstacle0.png")
     }
     obstacles.push(obstacle);
     //console.log(obstacles)
@@ -236,8 +236,11 @@ function Start () {
     canvas.height = window.innerHeight;
 
     ctx.font = "20px sans-serif";
-
+    
+    
+    //gameSpeed = 3;
     gameSpeed = 3;
+    console.log(gameSpeed)
     gravity = 1;
 
     score = 0;
@@ -246,11 +249,11 @@ function Start () {
       highscore = localStorage.getItem('highscore');
     }
 
-    player = new Player(200, 0, 100, 130);
+    player = new Player(200, 0, 150, 180);
 
-
-    scoreText = new Text("Score: " + score, 25, 25, "left", "#212121", "20");
-    highscoreText = new Text("Highscore: " + highscore, canvas.width - 25, 25, "right", "#212121", "20");  
+    scoreText = new Text("연봉: " + score + "만원", 15, 35, "left", "#212121", canvas.width/70);
+    highscoreText = new Text("최고 등수 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
+    console.log(canvas.width/5)
 
     requestAnimationFrame(Update);
 }
@@ -264,7 +267,6 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     layer1.update();
     layer2.update();
     layer3.update();
-    layer4.update();
 
     spawnTimer--;
     if (spawnTimer <= 0) {
@@ -273,7 +275,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
         
         if (spawnTimer < 60) {
-        spawnTimer = 60;
+            spawnTimer = 60;
         }
     }
     // Spawn Enemies
@@ -294,7 +296,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                 score = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 3;
-                
+                window.localStorage.setItem('highscore', highscore);
         }
 
         o.Update();
@@ -302,19 +304,35 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     player.Animate();
 
     
-  score++;
-  scoreText.t = "Score: " + score;
-  scoreText.Draw();
+    score++;
+    scoreText.t = "연봉: " + score+"만원";
+    
+    scoreText.Draw();
 
-  if (score > highscore) {
-    highscore = score;
-    highscoreText.t = "Highscore: " + highscore;
-  }
-  
-  highscoreText.Draw();
+    if (score > highscore) {
+        highscore = score;
+        highscoreText.t = "최고 등수 : " + highscore;
+    }
+    
+    highscoreText.Draw();
+    
+    if(score % 300===0){
+        ctx.beginPath();
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = "#000000";
+        console.log("지나갑니다.")
+        
+        setTimeout(function(){
+            console.log("이렇게")
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            StageCount++;
+            if(StageCount==4) StageCount = 3;
+            console.log("스테이지 : " + StageCount)
+        }, 500000);
+    }
 
-  gameSpeed += 0.003;
+    gameSpeed += 0.003;
 }
 
-
+//gameSpeed = prompt("초기속도를 설정해 주세요");
 Start();

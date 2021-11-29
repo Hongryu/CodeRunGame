@@ -42,7 +42,7 @@ class Player {
         this.groundHeight = canvas.height/4
 
         this.characterImg = new Image();
-        this.characterImg.src="../characterImg/DefaultRun0.png"
+        this.characterImg.src="../characterImg/DefaultRun3_0.png"
     }
 
     Animate () {
@@ -84,12 +84,12 @@ class Player {
 
     Slide(){
         //console.log("슬라이드 하고 있습니다.")
-        this.characterImg.src="../characterImg/Slide0.png";
+        this.characterImg.src="../characterImg/Slide3.png";
     }
 
     Jump () {
         //console.log("뛰고있습니다.")
-        this.characterImg.src="../characterImg/Jump0.png";
+        this.characterImg.src="../characterImg/Jump3.png";
         //땅에 붙어있고, jumpTimer가 0일떄(Jump를 호출하지 않을때 Jump를 호출하면)
         //y는 마이너스일수록 위로 올라간다!!
         if (this.grounded && this.jumpTimer == 0) {
@@ -99,7 +99,7 @@ class Player {
         //이미 점프를 하고 있는 상황일때
         else if (this.jumpTimer > 0 && this.jumpTimer < 15) {
             this.jumpTimer++; //JumpTimer를 증가시켜
-            this.dy = -this.jumpForce - (this.jumpTimer/50);  //꾹누르면 누를수록 더 올라감(snwjr)
+            this.dy = -this.jumpForce - (this.jumpTimer/20);  //꾹누르면 누를수록 더 올라감(snwjr)
         }
     }
 
@@ -110,7 +110,7 @@ class Player {
             characterIdx%=4;
             //console.log(characterIdx);
             //console.log(this.characterImg.src);
-            this.characterImg.src="../characterImg/DefaultRun"+ characterIdx +".png";
+            this.characterImg.src="../characterImg/DefaultRun3_"+ characterIdx +".png";
         }
         ctx.drawImage(this.characterImg, this.x, this.y, this.w, this.h);
     }
@@ -126,7 +126,7 @@ class Obstacle {
         this.dx = -gameSpeed;
 
         this.obstacleImg = new Image();
-        this.obstacleImg.src="../obstacleImg/obstacle0.png";
+        this.obstacleImg.src="../Stage0Img/obstacle0.png";
     }
 
     Update () {
@@ -143,11 +143,11 @@ class Obstacle {
 
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../Stage1Img/backgroundBack.png"
+backgroundLayer1.src="../Stage0Img/backgroundBack.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../Stage1Img/backgroundFront.png"
+backgroundLayer2.src="../Stage0Img/backgroundFront.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../Stage1Img/map1Ground.png"
+backgroundLayer3.src="../Stage0Img/mapGround.png"
 
 class Layer{
     constructor(image, speedModifier, plus){
@@ -208,15 +208,16 @@ class Text {
 // Game Functions
 function SpawnObstacle () {
     let size = RandomIntInRange(20+gameSpeed, 80+gameSpeed);
+    if(size>150){size = 150;}
     console.log(size);
     let type = RandomIntInRange(0, 1);
     let obstacle;
     if(type===0){
-        obstacle = new Obstacle(canvas.width + size+gameSpeed, canvas.height - (size+gameSpeed), size+gameSpeed, size+gameSpeed);
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle0.png";
+        obstacle = new Obstacle(canvas.width + 80, canvas.height - 80,80, 80);
+        obstacle.obstacleImg.src = "../Stage0Img/obstacle0.png";
     }else if(type===1){
-        obstacle = new Obstacle(canvas.width + size+gameSpeed, canvas.height - (size+gameSpeed), size+gameSpeed, (size+gameSpeed));
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle1.png";
+        obstacle = new Obstacle(canvas.width + 100, canvas.height - 80,100, 80);
+        obstacle.obstacleImg.src = "../Stage0Img/obstacle1.png";
     }
     obstacles.push(obstacle);
     //console.log(obstacles)
@@ -233,19 +234,21 @@ function Start () {
 
     ctx.font = "20px sans-serif";
     
-    gameSpeed = 3;
-    //gameSpeed = 10;
+    
+    //gameSpeed = 3;
+    gameSpeed = 5;
+    console.log(gameSpeed)
     gravity = 1;
 
-    
+    score = 0;
     highscore = 0;
     if (localStorage.getItem('highscore')) {
       highscore = localStorage.getItem('highscore');
     }
 
-    player = new Player(200, 0, 100, 130);
+    player = new Player(200, 0, 150, 180);
 
-    scoreText = new Text("연봉: " + score+"만원", 15, 35, "left", "#212121", canvas.width/70);
+    scoreText = new Text("연봉: " + score + "만원", 15, 35, "left", "#212121", canvas.width/70);
     scoreText.fillStyle = "#FFFFFF"
     highscoreText = new Text("최고 등수 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
     console.log(canvas.width/5)
@@ -290,7 +293,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                 obstacles = [];
                 score = 0;
                 spawnTimer = initialSpawnTimer;
-                gameSpeed = 3;
+                gameSpeed = 5;
                 window.localStorage.setItem('highscore', highscore);
         }
 
@@ -301,6 +304,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     score++;
     scoreText.t = "연봉: " + score+"만원";
+    
     scoreText.Draw();
 
     if (score > highscore) {
@@ -310,8 +314,21 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     highscoreText.Draw();
     
+    if(score >=3000){
+        ctx.beginPath();
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = "#000000";
+        
+        setTimeout(function(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            window.location.href = 'Stage2.html';
+        }, 2000);
+        
+        
+    }
+
     gameSpeed += 0.003;
 }
 
-
+//gameSpeed = prompt("초기속도를 설정해 주세요");
 Start();
