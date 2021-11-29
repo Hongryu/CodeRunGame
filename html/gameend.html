@@ -2,36 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src = "/js/localStorageExam.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/help.css">
+    <title>How to Game?</title>
 
-    <style>
-        .bg{
-            background-color: beige;
-        }
-        .endbg img {
-            vertical-align: middle;
-        }
-        .endtext {
-            padding: 5px 10px;
-            text-align: center;
-        }
-    </style>
+
+
 </head>
 <body>
-    <!--local storage연동-->
-    
-    <div class = "bg">
-        <div class = "endbg"><img src= "../image/../image/backDefault.png" alt = ""></div>
-            <div class = "endtext">
-                <script>
-                    storage.innerHTML = "";
-                    storage.innerHTML 
-                </script>
-            </div>
-    </div>
-    
+
+
+
+
+
+    <button type="button"  id="restart_btn" onclick="window.location.href = 'checkPlayer.html'">
+        <img src="../image/../image/gamerestartDefault.png">
+    </button>
+    <button type = "button" id = "gomain_btn" onclick="window.location.href = 'index.html'">
+        <img src = "../image/../image/gamenextDefault.png">
+    </button>
+
+
+   <script src = "/js/help.js" type="text/javascript"></script>
+        
+
 </body>
 </html>

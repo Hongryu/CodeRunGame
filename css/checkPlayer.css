@@ -4,20 +4,16 @@
 }
 
 #onePlayer_btn{
-    cursor: pointer;
+    /* cursor: pointer; */
     border: none;
     background: none;
-    position:absolute;
-    margin-left: 280px;
-    margin-top: 180px;
+    margin-top: 300px;
 }
 
 #twoPlayer_btn{
-    cursor: pointer;
+    /* cursor: pointer; */
     padding: 50;
     border: none;
     background: none;
-    position:absolute;
-    margin-left: 780px;
-    margin-top: 180px;
+    margin-left: 70px;
 }
