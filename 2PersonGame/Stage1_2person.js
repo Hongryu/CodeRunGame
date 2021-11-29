@@ -15,6 +15,7 @@ let keys = {};
 let characterIdx = 0;
 let characterIdx2 = 0;
 let drawTimer = 0;
+let drawTimer2 = 0;
 let StageCount = 0;
 let characterCount = 0;
 let characterCount2 = 2;
@@ -128,7 +129,7 @@ class Player {
     Draw () {
         drawTimer++;
         let check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
-        if(check <=10) check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        if(check <=10) check = drawTimer%(8-(Math.round(gameSpeed*0.5)));
         else check = 10;
         if(check==0&&this.grounded&&!this.isSlide){
 
@@ -226,9 +227,9 @@ class Player2 {
     }
 
     Draw () {
-        drawTimer++;
-        let check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
-        if(check <=10) check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        drawTimer2++;
+        let check = drawTimer2%(10-(Math.round(gameSpeed*0.5)));
+        if(check <=10) check = drawTimer2%(8-(Math.round(gameSpeed*0.5)));
         else check = 10;
         if(check==0&&this.grounded&&!this.isSlide){
 
@@ -382,8 +383,8 @@ function Start () {
       highscore = localStorage.getItem('highscore');
     }
 
-    player = new Player(200, 0, 150, 180);
-    player2 = new Player2(450, 0, 150, 180);
+    player = new Player(250, 0, 150, 180);
+    player2 = new Player2(600, 0, 150, 180);
 
     scoreText = new Text("연봉: " + score + "만원", 15, 35, "left", "#212121", canvas.width/70);
     highscoreText = new Text("최고 연봉 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
