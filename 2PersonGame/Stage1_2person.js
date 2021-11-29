@@ -12,10 +12,13 @@ let gravity;
 let obstacles = [];
 let gameSpeed;
 let keys = {};
-let characterIdx1 = 0;
-let drawTimer1 = 0;
+let characterIdx = 0;
 let characterIdx2 = 0;
-let drawTimer2 = 0;
+let drawTimer = 0;
+let StageCount = 0;
+let characterCount = 0;
+let characterCount2 = 2;
+let localStorageIdx = localStorage.getItem('index');
 
 // Event Listeners
 //키를 누르고 있으면 그 키는 true
@@ -28,6 +31,22 @@ document.addEventListener('keyup', function (e) {
     keys[e.code] = false;
 });
 
+function paintImage() {
+    if(StageCount===0){
+        canvas.style.backgroundImage = "url(../Stage0Img/mapBG.png)";  
+    }
+    else if(StageCount===1){
+        canvas.style.backgroundImage="url(../Stage1Img/mapBG.png)";
+        console.log("확인")
+    }
+    else if(StageCount===2){
+        canvas.style.backgroundImage = "url(../Stage2Img/mapBG.png)";  
+    }
+    else if(StageCount===3){
+        canvas.style.backgroundImage = "url(../Stage3Img/mapBG.png)";  
+    }
+}
+
 class Player {
     constructor (x, y, w, h) {
         this.x = x;
@@ -36,7 +55,7 @@ class Player {
         this.h = h;
 
         this.dy = 0;    //direction y
-        this.jumpForce = 15;
+        this.jumpForce = 18;
         this.originalWidth = w;
         this.originalHeight = h;
         this.grounded = false;
@@ -45,7 +64,7 @@ class Player {
         this.groundHeight = canvas.height/4
 
         this.characterImg = new Image();
-        this.characterImg.src="../characterImg/DefaultRun0.png"
+        this.characterImg.src="../characterImg/DefaultRun"+characterCount+"_0.png"
     }
 
     Animate () {
@@ -73,6 +92,7 @@ class Player {
         
         //console.log(canvas.height);
         if (this.y + this.h < canvas.height-this.groundHeight) {      //바닥에 붙어있지 않으면
+            //console.log("확인")
             this.dy += gravity;
             this.grounded = false;
         } else {
@@ -86,12 +106,12 @@ class Player {
 
     Slide(){
         //console.log("슬라이드 하고 있습니다.")
-        this.characterImg.src="../characterImg/Slide0.png";
+        this.characterImg.src="../characterImg/Slide"+characterCount+".png";
     }
 
     Jump () {
         //console.log("뛰고있습니다.")
-        this.characterImg.src="../characterImg/Jump0.png";
+        this.characterImg.src="../characterImg/Jump"+characterCount+".png";
         //땅에 붙어있고, jumpTimer가 0일떄(Jump를 호출하지 않을때 Jump를 호출하면)
         //y는 마이너스일수록 위로 올라간다!!
         if (this.grounded && this.jumpTimer == 0) {
@@ -106,17 +126,26 @@ class Player {
     }
 
     Draw () {
-        drawTimer1++;
-        if(drawTimer1%5==0&&this.grounded&&!this.isSlide){
-            characterIdx1++;
-            characterIdx1%=4;
+        drawTimer++;
+        let check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        if(check <=10) check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        else check = 10;
+        if(check==0&&this.grounded&&!this.isSlide){
+
+            //console.log(Math.round(gameSpeed));
+            characterIdx++;
+            characterIdx%=4;
             //console.log(characterIdx);
             //console.log(this.characterImg.src);
-            this.characterImg.src="../characterImg/DefaultRun"+ characterIdx1 +".png";
+            this.characterImg.src="../characterImg/DefaultRun"+characterCount+"_"+ characterIdx +".png";
         }
+        ctx.beginPath();
         ctx.drawImage(this.characterImg, this.x, this.y, this.w, this.h);
+        ctx.closePath();
     }
 }
+
+
 
 class Player2 {
     constructor (x, y, w, h) {
@@ -126,7 +155,7 @@ class Player2 {
         this.h = h;
 
         this.dy = 0;    //direction y
-        this.jumpForce = 15;
+        this.jumpForce = 18;
         this.originalWidth = w;
         this.originalHeight = h;
         this.grounded = false;
@@ -135,7 +164,7 @@ class Player2 {
         this.groundHeight = canvas.height/4
 
         this.characterImg = new Image();
-        this.characterImg.src="../characterImg/DefaultRun2_0.png"
+        this.characterImg.src="../characterImg/DefaultRun"+characterCount2+"_0.png"
     }
 
     Animate () {
@@ -163,6 +192,7 @@ class Player2 {
         
         //console.log(canvas.height);
         if (this.y + this.h < canvas.height-this.groundHeight) {      //바닥에 붙어있지 않으면
+            //console.log("확인")
             this.dy += gravity;
             this.grounded = false;
         } else {
@@ -176,12 +206,12 @@ class Player2 {
 
     Slide(){
         //console.log("슬라이드 하고 있습니다.")
-        this.characterImg.src="../characterImg/Slide2_0.png";
+        this.characterImg.src="../characterImg/Slide"+characterCount2+".png";
     }
 
     Jump () {
         //console.log("뛰고있습니다.")
-        this.characterImg.src="../characterImg/Jump2_0.png";
+        this.characterImg.src="../characterImg/Jump"+characterCount2+".png";
         //땅에 붙어있고, jumpTimer가 0일떄(Jump를 호출하지 않을때 Jump를 호출하면)
         //y는 마이너스일수록 위로 올라간다!!
         if (this.grounded && this.jumpTimer == 0) {
@@ -196,15 +226,22 @@ class Player2 {
     }
 
     Draw () {
-        drawTimer2++;
-        if(drawTimer2%5==0&&this.grounded&&!this.isSlide){
+        drawTimer++;
+        let check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        if(check <=10) check = drawTimer%(10-(Math.round(gameSpeed*0.5)));
+        else check = 10;
+        if(check==0&&this.grounded&&!this.isSlide){
+
+            //console.log(Math.round(gameSpeed));
             characterIdx2++;
             characterIdx2%=4;
             //console.log(characterIdx);
             //console.log(this.characterImg.src);
-            this.characterImg.src="../characterImg/DefaultRun2_"+ characterIdx2 +".png";
+            this.characterImg.src="../characterImg/DefaultRun"+characterCount2+"_"+ characterIdx2 +".png";
         }
+        ctx.beginPath();
         ctx.drawImage(this.characterImg, this.x, this.y, this.w, this.h);
+        ctx.closePath();
     }
 }
 
@@ -232,14 +269,13 @@ class Obstacle {
         ctx.drawImage(this.obstacleImg, this.x, this.y, this.w, this.h);
     }
 }
-
 //이미지 객체 생성
 const backgroundLayer1 = new Image()
-backgroundLayer1.src="../Stage1Img/backgroundBack.png"
+backgroundLayer1.src="../Stage"+StageCount+"Img/backgroundBack.png"
 const backgroundLayer2 = new Image()
-backgroundLayer2.src="../Stage1Img/backgroundFront.png"
+backgroundLayer2.src="../Stage"+StageCount+"Img/backgroundFront.png"
 const backgroundLayer3 = new Image()
-backgroundLayer3.src="../Stage1Img/map1Ground.png"
+backgroundLayer3.src="../Stage"+StageCount+"Img/mapGround.png"
 
 class Layer{
     constructor(image, speedModifier, plus){
@@ -254,6 +290,9 @@ class Layer{
         this.plus = plus;
     }
     update(){
+        backgroundLayer1.src="../Stage"+StageCount+"Img/backgroundBack.png"
+        backgroundLayer2.src="../Stage"+StageCount+"Img/backgroundFront.png"
+        backgroundLayer3.src="../Stage"+StageCount+"Img/mapGround.png"
         //x는 오->왼으로 이동
         this.speed = gameSpeed * this.speedModifier;
         if(this.x<= -this.width){
@@ -274,19 +313,49 @@ class Layer{
 }
 
 const layer1 = new Layer(backgroundLayer1, 0.8, 1200);
-const layer2 = new Layer(backgroundLayer2, 1.5, 960);
-const layer3 = new Layer(backgroundLayer3, 4, 0);
+const layer2 = new Layer(backgroundLayer2, 1.2, 960);
+const layer3 = new Layer(backgroundLayer3, 3, 0);
+
+class Text {
+    constructor (t, x, y, a, c, s) {
+      this.t = t;
+      this.x = x;
+      this.y = y;
+      this.a = a;
+      this.c = c;
+      this.s = s;
+    }
+  
+    Draw () {
+      ctx.beginPath();
+      ctx.fillStyle = this.c;
+      ctx.font = this.s + "px sans-serif";
+      ctx.textAlign = this.a;
+      if(StageCount==3){
+          ctx.fillStyle="#FFFFFF";
+      }
+      ctx.fillText(this.t, this.x, this.y);
+      ctx.closePath();
+    }
+  }
 
 // Game Functions
 function SpawnObstacle () {
+    let size = RandomIntInRange(20+gameSpeed, 80+gameSpeed);
+    if(size>150){size = 150;}
+    //console.log(size);
     let type = RandomIntInRange(0, 1);
     let obstacle;
-    if(type===0){
-        obstacle = new Obstacle(canvas.width + 40, canvas.height - 40, 40, 40);
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle0.png";
+    if(StageCount===0&&type===1){
+        obstacle = new Obstacle(canvas.width, canvas.height - 80,90, 80);
+        obstacle.obstacleImg.src = "../Stage0Img/obstacle1.png";
+    }else if(type===0){
+        obstacle = new Obstacle(canvas.width, canvas.height - 70,70, 70);
+        obstacle.obstacleImg.src = "../Stage"+StageCount+"Img/obstacle0.png";
+        //console.log("../Stage"+StageCount+"Img/obstacle0.png")
     }else if(type===1){
-        obstacle = new Obstacle(canvas.width + 80, canvas.height - 50, 80, 50);
-        obstacle.obstacleImg.src = "../obstacleImg/obstacle1.png";
+        obstacle = new Obstacle(canvas.width, 0 , 100, canvas.height-150);
+        obstacle.obstacleImg.src = "../Stage"+StageCount+"Img/obstacle1.png";
     }
     obstacles.push(obstacle);
     //console.log(obstacles)
@@ -301,11 +370,24 @@ function Start () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    gameSpeed = 3;
+    ctx.font = "20px sans-serif";
+    
+    gameSpeed = 4;
+    //console.log(gameSpeed)
     gravity = 1;
 
-    player = new Player(150, 0, 100, 130);
-    player2 = new Player2(450, 0, 100, 130);
+    score = 0;
+    highscore = 0;
+    if (localStorage.getItem('highscore')) {
+      highscore = localStorage.getItem('highscore');
+    }
+
+    player = new Player(200, 0, 150, 180);
+    player2 = new Player2(450, 0, 150, 180);
+
+    scoreText = new Text("연봉: " + score + "만원", 15, 35, "left", "#212121", canvas.width/70);
+    highscoreText = new Text("최고 연봉 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
+    //console.log(canvas.width/5)
 
     requestAnimationFrame(Update);
 }
@@ -315,7 +397,9 @@ let spawnTimer = initialSpawnTimer;
 
 function Update () {
 requestAnimationFrame(Update);
+
 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     layer1.update();
     layer2.update();
     layer3.update();
@@ -327,7 +411,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
         
         if (spawnTimer < 60) {
-        spawnTimer = 60;
+            spawnTimer = 60;
         }
     }
     // Spawn Enemies
@@ -347,7 +431,33 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                 obstacles = [];
                 score = 0;
                 spawnTimer = initialSpawnTimer;
-                gameSpeed = 3;
+                gameSpeed = 4;
+                localStorageIdx = localStorage.getItem('index');
+                if(localStorage.getItem('highscore'+(localStorageIdx-1))!=highscore){
+                    window.localStorage.setItem('highscore'+localStorageIdx++, highscore);
+                    localStorage.setItem('index', localStorageIdx);
+                    console.log(localStorageIdx);
+                }
+                
+                
+        }
+        if (
+            player2.x < o.x + o.w &&
+            player2.x + player2.w > o.x &&
+            player2.y < o.y + o.h &&
+            player2.y + player2.h > o.y
+            ) {
+                obstacles = [];
+                score = 0;
+                spawnTimer = initialSpawnTimer;
+                gameSpeed = 4;
+                localStorageIdx = localStorage.getItem('index');
+                if(localStorage.getItem('highscore'+(localStorageIdx-1))!=highscore){
+                    window.localStorage.setItem('highscore'+localStorageIdx++, highscore);
+                    localStorage.setItem('index', localStorageIdx);
+                    console.log(localStorageIdx);
+                }   
+                
                 
         }
 
@@ -355,8 +465,42 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     player.Animate();
     player2.Animate();
-    gameSpeed += 0.003;
+    
+    score++;
+    scoreText.t = "연봉: " + score+"만원";
+    
+    scoreText.Draw();
+
+    if (score > highscore) {
+        highscore = score;
+        highscoreText.t = "최고 연봉 : " + highscore;
+    }
+    
+    highscoreText.Draw();
+    
+    if(score % 3000===0){
+        ctx.beginPath();
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        //console.log("지나갑니다.")
+        
+        let intervalId = setInterval(function(){
+            //console.log("이렇게")
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            StageCount++;
+            if(StageCount==4) StageCount = 3;
+            //console.log("스테이지 : " + StageCount)
+            clearInterval(intervalId);
+            paintImage();
+        }, 1000);
+    }
+    
+    if(gameSpeed <=10){
+        gameSpeed += 0.003;
+    }else{
+        gameSpeed = 10;
+    }
 }
 
-
+//gameSpeed = prompt("초기속도를 설정해 주세요");
+paintImage();
 Start();

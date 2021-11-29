@@ -4,7 +4,7 @@ body.height=innerHeight;
 
 let backbtn = document.querySelector('#gameBack_btn');
    backbtn.addEventListener('click', function(){
-      window.location.href = 'index.html';
+      window.location.href = '../html/index.html';
     
 })
 
