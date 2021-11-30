@@ -12,5 +12,16 @@ helpBtn.addEventListener('click', function(){
 let rankBtn = document.querySelector('#ranking_btn');
 
 rankBtn.addEventListener('click', function(){
-    window.location.href = '../html/rank.html';
+    window.location.href = '../html/ranking.html';
 })
+
+
+
+function setName(){
+    username = document.querySelector("#name").value;
+    localStorage.setItem('name', username);
+}
+
+function getName(){
+    return localStorage.getItem('name');
+}

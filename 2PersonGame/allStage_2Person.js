@@ -2,10 +2,10 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 // Variables
-let score;
-let scoreText;
-let highscore;
-let highscoreText;
+let score2player;
+let scoreText2player;
+let highscore2player;
+let highscore2playerText;
 let player;
 let player2;
 let gravity;
@@ -17,9 +17,9 @@ let characterIdx2 = 0;
 let drawTimer = 0;
 let drawTimer2 = 0;
 let StageCount = 0;
-let characterCount = 0;
-let characterCount2 = 2;
-let localStorageIdx = localStorage.getItem('index');
+let characterCount = 3;
+let characterCount2 = 4;
+let localStorageIdx = localStorage.getItem('index2');
 
 // Event Listeners
 //키를 누르고 있으면 그 키는 true
@@ -377,17 +377,19 @@ function Start () {
     //console.log(gameSpeed)
     gravity = 1;
 
-    score = 0;
-    highscore = 0;
-    if (localStorage.getItem('highscore')) {
-      highscore = localStorage.getItem('highscore');
+    score2player = 0;
+    highscore2player = 0;
+    if (localStorage.getItem(`highscore2player${localStorageIdx-1}`)=='undefined') {
+        highscore2player = 0;
+    }else{
+        highscore2player = localStorage.getItem(`highscore2player${localStorageIdx-1}`);
     }
 
     player = new Player(250, 0, 150, 180);
     player2 = new Player2(600, 0, 150, 180);
 
-    scoreText = new Text("연봉: " + score + "만원", 15, 35, "left", "#212121", canvas.width/70);
-    highscoreText = new Text("최고 연봉 : " + highscore, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
+    score2playerText = new Text("연봉: " + score2player + "만원", 15, 35, "left", "#212121", canvas.width/70);
+    highscore2playerText = new Text("최고 연봉 : " + highscore2player, canvas.width - 15, 35, "right", "#212121", canvas.width/70);
     //console.log(canvas.width/5)
 
     requestAnimationFrame(Update);
@@ -430,15 +432,33 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             player.y + player.h > o.y
             ) {
                 obstacles = [];
-                score = 0;
+                
+                if(StageCount == 0){
+                    window.location.href = '../html/gameend.html';
+                }
+                else if(StageCount == 1){
+                    window.location.href = '../html/gameend1.html';
+                }
+                else if(StageCount == 2){
+                    window.location.href = '../html/gameend2.html';
+                }
+                else if(StageCount == 3){
+                    window.location.href = '../html/gameend3.html';
+                }
+                localStorage.setItem('score2player', score2player);
+                score2player = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 4;
-                localStorageIdx = localStorage.getItem('index');
-                if(localStorage.getItem('highscore'+(localStorageIdx-1))!=highscore){
-                    window.localStorage.setItem('highscore'+localStorageIdx++, highscore);
-                    localStorage.setItem('index', localStorageIdx);
+                localStorageIdx = localStorage.getItem('index2');
+                
+                
+                if(localStorage.getItem(`highscore2player${localStorageIdx-1}`)<localStorage.getItem('score2player')){
+                    console.log("들어옴")
+                    window.localStorage.setItem(`highscore2player${(+localStorageIdx)}`, localStorage.getItem('score2player'));
+                    localStorageIdx++;
+                    localStorage.setItem('index2', localStorageIdx);
                     console.log(localStorageIdx);
-                }
+                }                
                 
                 
         }
@@ -449,17 +469,33 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             player2.y + player2.h > o.y
             ) {
                 obstacles = [];
-                score = 0;
+                
+                if(StageCount == 0){
+                    window.location.href = '../html/gameend.html';
+                }
+                else if(StageCount == 1){
+                    window.location.href = '../html/gameend1.html';
+                }
+                else if(StageCount == 2){
+                    window.location.href = '../html/gameend2.html';
+                }
+                else if(StageCount == 3){
+                    window.location.href = '../html/gameend3.html';
+                }
+                localStorage.setItem('score2player', score2player);
+                score2player = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 4;
-                localStorageIdx = localStorage.getItem('index');
-                if(localStorage.getItem('highscore'+(localStorageIdx-1))!=highscore){
-                    window.localStorage.setItem('highscore'+localStorageIdx++, highscore);
-                    localStorage.setItem('index', localStorageIdx);
-                    console.log(localStorageIdx);
-                }   
-                window.location.href = '../html/gameend.html';
+                localStorageIdx = localStorage.getItem('index2');
                 
+                
+                if(localStorage.getItem(`highscore2player${localStorageIdx-1}`)<localStorage.getItem('score2player')){
+                    console.log("들어옴")
+                    window.localStorage.setItem(`highscore2player${(+localStorageIdx)}`, localStorage.getItem('score2player'));
+                    localStorageIdx++;
+                    localStorage.setItem('index2', localStorageIdx);
+                    console.log(localStorageIdx);
+                }                
         }
 
         o.Update();
@@ -467,19 +503,21 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     player.Animate();
     player2.Animate();
     
-    score++;
-    scoreText.t = "연봉: " + score+"만원";
+    score2player++;
+    score2playerText.t = "연봉: " + score2player+"만원";
     
-    scoreText.Draw();
+    score2playerText.Draw();
 
-    if (score > highscore) {
-        highscore = score;
-        highscoreText.t = "최고 연봉 : " + highscore;
+    if (score2player > highscore2player) {
+        //console.log("점수 : "+ score)
+        //console.log("높은 점수 : "+ highscore)
+        highscore2player = score2player;
+        highscore2playerText.t = "최고 연봉 : " + highscore2player;
     }
     
-    highscoreText.Draw();
+    highscore2playerText.Draw();
     
-    if(score % 3000===0){
+    if(score2player % 3000===0){
         ctx.beginPath();
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         //console.log("지나갑니다.")
@@ -489,7 +527,7 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             StageCount++;
             if(StageCount==4) StageCount = 3;
-            //console.log("스테이지 : " + StageCount)
+            console.log(StageCount+"스테이지")
             clearInterval(intervalId);
             paintImage();
         }, 1000);

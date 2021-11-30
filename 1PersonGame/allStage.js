@@ -274,8 +274,10 @@ function Start () {
 
     score = 0;
     highscore = 0;
-    if (localStorage.getItem('highscore')) {
-      highscore = localStorage.getItem('highscore');
+    if (localStorage.getItem(`highscore${localStorageIdx-1}`)=='undefined') {
+        highscore = 0;
+    }else{
+        highscore = localStorage.getItem(`highscore${localStorageIdx-1}`);
     }
 
     player = new Player(200, 0, 150, 180);
@@ -339,17 +341,20 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
                 else if(StageCount == 3){
                     window.location.href = '../html/gameend3.html';
                 }
+                localStorage.setItem('score', score);
                 score = 0;
                 spawnTimer = initialSpawnTimer;
                 gameSpeed = 4;
                 localStorageIdx = localStorage.getItem('index');
-                if(localStorage.getItem('highscore'+(localStorageIdx-1))!=highscore){
-                    window.localStorage.setItem('highscore'+localStorageIdx++, highscore);
+                
+                
+                if(localStorage.getItem(`highscore${localStorageIdx-1}`)<localStorage.getItem('score')){
+                    console.log("들어옴")
+                    window.localStorage.setItem(`highscore${(+localStorageIdx)}`, localStorage.getItem('score'));
+                    localStorageIdx++;
                     localStorage.setItem('index', localStorageIdx);
                     console.log(localStorageIdx);
-                }
-                window.location.href = '../html/gameend.html';
-                
+                }                
         }
 
         o.Update();
@@ -362,7 +367,10 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     scoreText.Draw();
 
+
     if (score > highscore) {
+        //console.log("점수 : "+ score)
+        //console.log("높은 점수 : "+ highscore)
         highscore = score;
         highscoreText.t = "최고 연봉 : " + highscore;
     }
@@ -372,14 +380,12 @@ ctx.clearRect(0, 0, canvas.width, canvas.height);
     if(score % 3000===0){
         ctx.beginPath();
         ctx.fillRect(0, 0, canvas.width, canvas.height)
-        console.log("지나갑니다.")
         
         let intervalId = setInterval(function(){
-            console.log("이렇게")
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             StageCount++;
             if(StageCount==4) StageCount = 3;
-            console.log("스테이지 : " + StageCount)
+            console.log(StageCount+"스테이지")
             clearInterval(intervalId);
             paintImage();
         }, 1000);

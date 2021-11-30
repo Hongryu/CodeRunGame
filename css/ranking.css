@@ -1,0 +1,22 @@
+*{
+    background-image: url("../image/Titlebase.png");
+    overflow: hidden; /* Hide scrollbars */
+}
+
+.background{
+    background-color: white;
+}
+
+#gameBack_btn{
+    margin-top:45px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#gameNext_btn{
+    margin-top:45px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}

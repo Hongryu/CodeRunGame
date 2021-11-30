@@ -7,3 +7,6 @@ let two = document.querySelector("#twoPlayer_btn");
 two.addEventListener('click', function(){
     window.location.href = '../2PersonGame/allStage_2Person.html';
 })
+
+// const username = document.querySelector('#name').value;
+// localStorage.setItem('name', username);
